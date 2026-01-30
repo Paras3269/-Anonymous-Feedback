@@ -15,9 +15,11 @@ import { Loader2 } from "lucide-react"
 import { signInSchema } from "@/schemas/signInSchema"
 import { signIn } from "next-auth/react"
 
+
+
 const  page = () => {
   
- 
+ const [isSubmitting ,setIsSubmitting]  = useState(false)
    
 
  const router = useRouter();
@@ -35,13 +37,13 @@ const  page = () => {
 
 
  const onSubmit = async(data: z.infer<typeof signInSchema>)=>{
-  
+   setIsSubmitting(true)
      const result =   await signIn('credentials',{
         redirect:false,
         identifier:data.identifier,
         password:data.password
       })
-
+      setIsSubmitting(false)
       if(result?.url){
           router.replace('/dashboard')
       }
@@ -120,9 +122,14 @@ const  page = () => {
             </FormItem>
           )}
           />
-          <Button type="submit"
-          className="cursor-pointer">
-          Signin
+           <Button type="submit" disabled={isSubmitting} className="cursor-pointer">
+           {
+            isSubmitting ? (
+            <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin"/> Please wait
+            
+            </>) : ('SignIn')
+           }
           </Button>
         </form>
         </Form>
