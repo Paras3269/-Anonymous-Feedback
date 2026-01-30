@@ -13,7 +13,7 @@ import axios, { AxiosError } from "axios"
 import { Loader2, RefreshCcw } from "lucide-react"
 import {  User } from "next-auth"
 import { useSession } from "next-auth/react"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState,useRef } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
@@ -22,6 +22,7 @@ import { toast } from "sonner"
     const [isLoading,setIsLoading] = useState(false)
     const [isSwitchLoading,setIsSwitchLoading] = useState(false)
 
+    const urlRef = useRef<HTMLInputElement | null>(null);
     const handleDeleteMessage = (messageId:string)=> {
       setMessages(messages.filter((message)=> message._id.toString() !== messageId))
     }
@@ -138,10 +139,16 @@ const baseUrl = `${window.location.protocol}//${window.location.host}`
 const profileUrl = `${baseUrl}/u/${username}`
 
 const copyToClipboard = () =>{
+  urlRef.current?.select();
   navigator.clipboard.writeText(profileUrl)
-  toast("URL copied",{
-    description:"Profile URL has been copied to clipboard"
-  })
+   toast.success(
+          <div className="flex flex-col gap-1">
+          <span className="font-medium">Successfully Copied</span>
+           <span className="text-sm  text-black">
+                Url is copied to clipboard
+                       </span>
+                   </div>
+               );
 }
 
 
@@ -159,6 +166,7 @@ const copyToClipboard = () =>{
           <h2 className="text-lg font-semibold mb-2">Copy Your Unique Link</h2>{' '}
           <div className="flex items-center border-2 border-dashed border-gray-400 rounded">
             <input 
+            ref={urlRef}
             type="text"
             value={profileUrl}
             disabled

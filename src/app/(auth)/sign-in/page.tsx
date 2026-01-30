@@ -35,15 +35,30 @@ const  page = () => {
 
 
  const onSubmit = async(data: z.infer<typeof signInSchema>)=>{
-    const result =   await signIn('credentials',{
+  
+     const result =   await signIn('credentials',{
         redirect:false,
         identifier:data.identifier,
         password:data.password
       })
-  console.log(result);
+
+      if(result?.url){
+          router.replace('/dashboard')
+      }
   
+  
+    if(result?.error?.includes("Please verify your account before login")){
+       toast.error(
+                <div className="flex flex-col gap-1">
+                <span className="font-medium">Email NotVerifed</span>
+                <span className="text-sm text-muted-foreground">
+                   Please Verify Your email
+                     </span>
+                    </div>
+                     );
+    }
       
-      if(result?.error){
+      if(result?.error?.includes("No user found with this email")){
         toast.error(
                 <div className="flex flex-col gap-1">
                 <span className="font-medium">Login Failed</span>
@@ -54,9 +69,7 @@ const  page = () => {
                      );
       }
 
-      if(result?.url){
-          router.replace('/dashboard')
-      }
+     
  }
 
   return (

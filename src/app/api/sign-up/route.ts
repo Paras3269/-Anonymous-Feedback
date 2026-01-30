@@ -63,7 +63,7 @@ export async function POST(request:Request){
     username,
     verifyCode
 )
-
+ 
 if(!emailResponse.success){
     return Response.json({
         success:false,
