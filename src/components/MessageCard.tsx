@@ -27,6 +27,7 @@ import { Message } from "@/model/User"
 import { useSonner } from "sonner"
 import axios from "axios"
 import { ApiResponse } from "@/types/ApiResponse"
+import dayjs from 'dayjs';
 
 type MessageCardProps={
     message:Message,
@@ -43,7 +44,7 @@ type MessageCardProps={
   return (
     <Card>
     <CardHeader>
-        <CardTitle>Message</CardTitle>
+        <CardTitle>{message.content}</CardTitle>
          <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button variant="destructive"
@@ -66,7 +67,9 @@ type MessageCardProps={
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-        <CardDescription className="text-xl font-semibold">{message.content}</CardDescription>
+       <div className="text-sm">
+          {dayjs(message.createdAt).format('MMM D, YYYY h:mm A')}
+        </div>
     </CardHeader>
     <CardContent>
     </CardContent>

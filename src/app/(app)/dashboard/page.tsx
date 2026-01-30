@@ -66,7 +66,7 @@ import { toast } from "sonner"
        try {
       const response =   await axios.get<ApiResponse>("/api/get-messages")
       setMessages(response.data.messages || [])
-      console.log(response);
+     
       
       if(refresh){
          toast.success(
@@ -157,13 +157,13 @@ const copyToClipboard = () =>{
       <h1 className="text-4xl font-bold mb-4">User Dashboard</h1>
         <div className="mb-4">
           <h2 className="text-lg font-semibold mb-2">Copy Your Unique Link</h2>{' '}
-          <div className="flex items-center">
+          <div className="flex items-center border-2 border-dashed border-gray-400 rounded">
             <input 
             type="text"
             value={profileUrl}
             disabled
             className="input input-bordered w-full p-2 mr-2"/>
-            <Button onClick={copyToClipboard}>Copy</Button>
+            <Button  className=" cursor-pointer"onClick={copyToClipboard}>Copy</Button>
           </div>
         </div>
 
